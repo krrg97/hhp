@@ -1,2 +1,3 @@
 # vnfm
-training exercises for vnfm team
+Training exercises for vnfm team.
+Do the exersices in your own.
