@@ -1,6 +1,4 @@
-# vnfm
 Training exercises for vnfm team.
 
 Do the exersices in your own branch.
-
-Open issue and use mentions to request a review.
+When you're done, open an issue in your branch and use mentions (@username) to request a review.
