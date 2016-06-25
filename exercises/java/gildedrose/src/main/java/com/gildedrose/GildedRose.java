@@ -32,6 +32,10 @@ class GildedRose
         {
             return new Legendary();
         }
+        if (item.name.startsWith("Conjured"))
+        {
+            return new Conjured();
+        }
         return new ItemCategory();
     }
 
@@ -126,5 +130,15 @@ class GildedRose
 
         @Override
         protected void decrementQuality(Item item) {}
+    }
+
+    private class Conjured extends ItemCategory
+    {
+        @Override
+        protected void decrementQuality(Item item)
+        {
+            super.decrementQuality(item);
+            super.decrementQuality(item);
+        }
     }
 }
