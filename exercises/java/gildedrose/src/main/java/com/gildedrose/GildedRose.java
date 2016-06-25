@@ -1,55 +1,130 @@
 package com.gildedrose;
-class GildedRose {
+
+class GildedRose
+{
     Item[] items;
-    public GildedRose(Item[] items) {
+
+    public GildedRose(Item[] items)
+    {
         this.items = items;
     }
-    public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Aged Brie")
-                    && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (items[i].quality > 0) {
-                    if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
-                    if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-            if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                items[i].sellIn = items[i].sellIn - 1;
-            }
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Aged Brie")) {
-                    if (!items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].quality > 0) {
-                            if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                                items[i].quality = items[i].quality - 1;
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
-                    }
-                }
+
+    public void updateQuality()
+    {
+        for (Item item : items)
+        {
+            ItemCategory category = categorize(item);
+            category.updateItem(item);
+        }
+    }
+
+    private ItemCategory categorize(Item item)
+    {
+        if (item.name.equals("Aged Brie"))
+        {
+            return new Cheese();
+        }
+        if (item.name.equals("Backstage passes to a TAFKAL80ETC concert"))
+        {
+            return new Concert();
+        }
+        if (item.name.equals("Sulfuras, Hand of Ragnaros"))
+        {
+            return new Legendary();
+        }
+        return new ItemCategory();
+    }
+
+
+    private class ItemCategory
+    {
+
+        public final void updateItem(Item item)
+        {
+            updateQuality(item);
+            updateSellin(item);
+            if (item.sellIn < 0)
+            {
+                updateExpired(item);
             }
         }
+
+        protected void updateQuality(Item item)
+        {
+            decrementQuality(item);
+        }
+
+        protected void updateSellin(Item item)
+        {
+            item.sellIn = item.sellIn - 1;
+        }
+
+        protected void updateExpired(Item item)
+        {
+            decrementQuality(item);
+        }
+
+        protected void incrementQuality(Item item)
+        {
+            if (item.quality < 50)
+            {
+                item.quality = item.quality + 1;
+            }
+        }
+
+        protected void decrementQuality(Item item)
+        {
+            if (item.quality > 0)
+            {
+                item.quality = item.quality - 1;
+            }
+        }
+    }
+
+    private class Cheese extends ItemCategory
+    {
+        @Override
+        protected void updateQuality(Item item)
+        {
+            incrementQuality(item);
+        }
+
+        @Override
+        protected void updateExpired(Item item)
+        {
+            incrementQuality(item);
+        }
+    }
+
+    private class Concert extends ItemCategory
+    {
+        @Override
+        protected void updateQuality(Item item)
+        {
+            incrementQuality(item);
+            if (item.sellIn <= 10)
+            {
+                incrementQuality(item);
+            }
+            if (item.sellIn <= 5)
+            {
+                incrementQuality(item);
+            }
+        }
+
+        @Override
+        protected void updateExpired(Item item)
+        {
+            item.quality = 0;
+        }
+    }
+
+    private class Legendary extends ItemCategory
+    {
+        @Override
+        protected void updateSellin(Item item) {}
+
+        @Override
+        protected void decrementQuality(Item item) {}
     }
 }
