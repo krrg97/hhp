@@ -13,9 +13,9 @@
             <Name>George</Name>
             <Surname>Harrison</Surname>
         </Member>
-        <Member>
-            <Name>Ringo</Name>
-            <Surname>Starr</Surname>
+        <Member aka="Ringo Starr">
+            <Name>Richard</Name>
+            <Surname>Starkey</Surname>
         </Member>
     </Members>
     <Albums>
