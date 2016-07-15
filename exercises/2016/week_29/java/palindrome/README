@@ -1,0 +1,10 @@
+import java.io.*;
+import java.util.*; 
+/*
+Write a function that checks if a given sentence is a palindrome. A palindrome is a word, phrase, verse, 
+or sentence that reads the same backward or forward. Only the order of English alphabet letters (A-Z and a-z) 
+should be considered, other characters should be ignored.
+*/
+  public static void main(String[] args) {    
+     System.out.println(isPalindrome("noel sees leon.")); 
+}
